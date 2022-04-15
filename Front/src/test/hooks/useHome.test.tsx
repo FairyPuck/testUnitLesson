@@ -1,11 +1,11 @@
 import {rest} from "msw";
 import {setupServer} from "msw/node";
 import { renderHook, act } from '@testing-library/react-hooks'
-import useCart from "../../hooks/useCart";
+import useHome from "../../hooks/useHome";
 
 const server = setupServer(
     rest.get(
-        "http://localhost:8000/api/cart",
+        "http://localhost:8000/api/products",
         (req, res, ctx) => {
             return res(
                 ctx.json({
@@ -30,20 +30,20 @@ const server = setupServer(
                             quantity: 20,
                             image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
                         }
-                ]}))}),
+                    ]}))}),
     // remove
-    );
+);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test("load cart", async () => {
-    const {result} = renderHook(() => useCart());
-    const {loading, loadCart} = result.current;
+test("load home", async () => {
+    const {result} = renderHook(() => useHome());
+    const {loading, loadProducts} = result.current;
     expect(loading).toEqual(true);
     await act(async () => {
-        await loadCart()
+        await loadProducts()
     });
     const {products} = result.current;
     console.log(products);
