@@ -24,14 +24,23 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const json = ctx.json({products: [{
+    id: 15,
+    name: 'Alien Rick',
+    price: '20',
+    quantity: 20,
+    image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
+}
+]};
+
 test("add product", async () => {
-    const {result} = renderHook(() => useProduct());
+    const {result} = renderHook(() => useProduct(json));
     const {loading, addProduct} = result.current;
     expect(loading).toEqual(true);
     await act(async () => {
         await addProduct()
     });
-    const {products} = result.current;
-    console.log(products);
+    const {product} = result.current;
+    console.log(product);
 })
 
