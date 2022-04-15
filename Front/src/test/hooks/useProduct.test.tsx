@@ -24,6 +24,7 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+// @ts-ignore
 const json = ctx.json({products: [{
     id: 15,
     name: 'Alien Rick',
@@ -31,7 +32,7 @@ const json = ctx.json({products: [{
     quantity: 20,
     image: 'https://rickandmortyapi.com/api/character/avatar/15.jpeg'
 }
-]};
+]});
 
 test("add product", async () => {
     const {result} = renderHook(() => useProduct(json));
@@ -40,7 +41,5 @@ test("add product", async () => {
     await act(async () => {
         await addProduct()
     });
-    const {product} = result.current;
-    console.log(product);
 })
 
