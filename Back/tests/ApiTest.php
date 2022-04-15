@@ -54,9 +54,38 @@ class ApiTest extends WebTestCase
         $this->assertEquals($this->products->getId('0'), $this->products->getId());
     }
 
-    public function testHH(): void
+    public function testDeleteProduct(): void
     {
-        
+        $client = static::createClient();
+        $client->request('DELETE', '/api/products');
+        $response = $client->deleteProduct();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->deleteProduct());
+        $responseData = json_decode($response->deleteProduct(), true);
+        $this->assertEquals(['delete' => 'ok'], $responseData);
+    }
+
+    public function testAddProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/api/cart');
+        $response = $client->addProductToCart();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->addProductToCart());
+        $responseData = json_decode($response->addProductToCart(), true);
+        $this->assertEquals(, $responseData);
+        $this->expectException(["error" => "too many"], $responseData);
+    }
+
+    public function testDeleteProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->request('DELETE', '/api/cart');
+        $response = $client->deleteProductToCart();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->deleteProductToCart());
+        $responseData = json_decode($response->deleteProductToCart(), true);
+        $this->assertEquals(, $responseData);
     }
 }
 
